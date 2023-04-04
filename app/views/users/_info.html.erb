@@ -7,7 +7,14 @@
   <tr>
 	  <th>introduction</th>
 	  <th><%= user.introduction %></th>
-	  
+	<tr>
+	  <th>follows</th>
+    <th><%= link_to "#{user.following_user.count}", follows_user_path(user) %></th>
+  </tr>
+  <tr>
+    <th>followeds</th>
+    <th><%= link_to "#{user.follower_user.count}", followers_user_path(user) %></th>
+  </tr>
 </table>
 
 <div class='row'>
