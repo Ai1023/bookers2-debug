@@ -19,6 +19,7 @@ class BooksController < ApplicationController
     @book.user_id = current_user.id
     if @book.save
       redirect_to book_path(@book), notice: "You have created book successfully."
+      render :book_comments
     else
       @books = Book.all
       render 'index'
@@ -48,13 +49,20 @@ class BooksController < ApplicationController
     @book = Book.find(params[:id])
     @book.user_id = current_user.id
     @book.destroy
-    redirect_to books_path, notice: "successfully delete book!"
+    render :book_comments, notice: "successfully delete book!"
   end
 
   private
 
   def book_params
     params.require(:book).permit(:title, :body)
+  end
+
+  def ensure_correct_user
+    @book = Book.find(params[:id])
+    unless @book.user == current_user
+      redirect_to books_path
+    end
   end
 
 end
