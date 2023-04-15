@@ -2,28 +2,17 @@ class FavoritesController < ApplicationController
   before_action :set_book
 
   def create
-    favorite = current_user.favorites.new(book_id: @book.id)
-    favorite.save
-    respond_to do |format|
-      format.html { redirect_to @book }
-      format.js
-    end
+    book = Book.find(params[:book_id])
+    @favorite = current_user.favorites.new(book_id: book.id)
+    @favorite.save
+    render 'replace_btn'
   end
 
   def destroy
-    favorite = current_user.favorites.find_by(book_id: @book.id)
-    if favorite
-      favorite.destroy
-    end
-    respond_to do |format|
-      format.html { redirect_to @book }
-      format.js
-    end
+    book = Book.find(params[:book_id])
+    @favorite = current_user.favorites.find_by(book_id: book.id)
+    @favorite.destroy
+    render 'replace_btn'
   end
-
-  private
-    def set_book
-      @book = Book.find(params[:book_id])
-    end
 
 end
